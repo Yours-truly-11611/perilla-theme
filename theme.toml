@@ -21,4 +21,3 @@ features = ["Responsive", "Google Fonts", "Hero Landing Page", "Dark Mode Suppor
   heroTintColor = "rgba(30, 20, 40, 0.55)"
   # Menu button label
   menuButtonLabel = "Explore"
-```
