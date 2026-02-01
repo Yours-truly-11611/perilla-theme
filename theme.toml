@@ -1,0 +1,24 @@
+# theme.toml
+name = "Surrealist"
+licensekey = ""
+license = "MIT"
+authors = ["Alexandria"]
+description = "A Hugo theme inspired by the Surrealist WordPress theme by Automattic. Features a full-viewport tinted hero landing page with responsive blog layout."
+homepage = ""
+tags = ["blog", "portfolio", "responsive", "minimal", "artistic"]
+features = ["Responsive", "Google Fonts", "Hero Landing Page", "Dark Mode Support"]
+
+[css]
+  # Supports custom CSS override by placing a file at static/css/custom.css
+
+[params]
+  # Defaults — override these in your site's config.toml under [params]
+  heroTitle = "My Site"
+  heroSubtitle = ""
+  # heroImage path (relative to static/) — set in your site config
+  heroImage = "images/hero.jpg"
+  # Tint color applied over the hero image (CSS color value)
+  heroTintColor = "rgba(30, 20, 40, 0.55)"
+  # Menu button label
+  menuButtonLabel = "Explore"
+```

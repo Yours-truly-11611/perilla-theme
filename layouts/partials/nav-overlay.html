@@ -1,0 +1,106 @@
+<!-- ============================================================
+     NAV OVERLAY
+     - Toggled open/close via JavaScript (class .is-open on #nav-overlay)
+     - The hamburger icon sits fixed top-right on every page
+     - On the homepage the hero__menu-btn also triggers it
+     ============================================================ -->
+
+<!-- Persistent hamburger (visible on all pages; hidden on homepage hero until scroll) -->
+<button class="hamburger" aria-controls="nav-overlay" aria-expanded="false" aria-label="Open navigation menu">
+  <span class="hamburger__line"></span>
+  <span class="hamburger__line"></span>
+  <span class="hamburger__line"></span>
+</button>
+
+<!-- Full-screen overlay -->
+<nav id="nav-overlay" class="nav-overlay" role="navigation" aria-label="Main navigation">
+  <!-- Close button -->
+  <button class="nav-overlay__close" aria-label="Close navigation menu">
+    <svg viewBox="0 0 24 24" width="28" height="28" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+      <line x1="18" y1="6" x2="6" y2="18"></line>
+      <line x1="6" y1="6" x2="18" y2="18"></line>
+    </svg>
+  </button>
+
+  <!-- Site title inside overlay (mirrors hero) -->
+  <div class="nav-overlay__header">
+    <a href="{{ "/" | relURL }}" class="nav-overlay__site-title">{{ .Site.Params.heroTitle | default .Site.Title }}</a>
+  </div>
+
+  <!-- Menu links — populated from your site's [[menu.main]] in config.toml -->
+  <ul class="nav-overlay__list">
+    {{ range .Site.Menus.main }}
+      <li class="nav-overlay__item">
+        <a href="{{ .URL | relURL }}" class="nav-overlay__link">{{ .Name }}</a>
+      </li>
+    {{ end }}
+  </ul>
+
+  <!-- Optional: social / footer links can go here -->
+</nav>
+
+<!-- Inline script: toggle logic -->
+<script>
+document.addEventListener('DOMContentLoaded', function () {
+  const overlay   = document.getElementById('nav-overlay');
+  const openers   = document.querySelectorAll('[aria-controls="nav-overlay"]');
+  const closer    = overlay.querySelector('.nav-overlay__close');
+
+  function open() {
+    overlay.classList.add('is-open');
+    openers.forEach(btn => btn.setAttribute('aria-expanded', 'true'));
+    document.body.classList.add('nav-is-open'); // prevent body scroll
+  }
+  function close() {
+    overlay.classList.remove('is-open');
+    openers.forEach(btn => btn.setAttribute('aria-expanded', 'false'));
+    document.body.classList.remove('nav-is-open');
+  }
+
+  openers.forEach(btn => btn.addEventListener('click', open));
+  closer.addEventListener('click', close);
+
+  // Close on Escape key
+  document.addEventListener('keydown', function (e) {
+    if (e.key === 'Escape' && overlay.classList.contains('is-open')) close();
+  });
+
+  // Close when clicking the backdrop (the overlay bg behind the panel)
+  overlay.addEventListener('click', function (e) {
+    if (e.target === overlay) close();
+  });
+});
+
+// Scroll listener: hide hero scroll-hint, toggle hamburger color on homepage
+(function () {
+  const scrollHint = document.querySelector('.hero__scroll-hint');
+  let ticking = false;
+
+  function onScroll() {
+    if (!ticking) {
+      requestAnimationFrame(function () {
+        // Hide chevron once user scrolls down
+        if (scrollHint && window.scrollY > 60) {
+          scrollHint.classList.add('is-hidden');
+        } else if (scrollHint) {
+          scrollHint.classList.remove('is-hidden');
+        }
+
+        // Toggle a body class so hamburger lines switch from white → dark
+        if (window.scrollY > window.innerHeight * 0.4) {
+          document.body.classList.add('scrolled');
+        } else {
+          document.body.classList.remove('scrolled');
+        }
+
+        ticking = false;
+      });
+      ticking = true;
+    }
+  }
+
+  window.addEventListener('scroll', onScroll, { passive: true });
+  // Run once on load in case page is already scrolled
+  onScroll();
+})();
+</script>

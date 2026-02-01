@@ -1,0 +1,55 @@
+{{ define "main" }}
+{{ $heroImage := .Params.heroImage | default "images/backgrounds/bathing.jpg" }}
+{{ $heroTint := .Params.heroTintColor | default "rgba(30, 20, 40, 0.55)" }}
+
+<section class="hero-split" aria-label="{{ .Title }} hero">
+  <div class="hero-split__title-block">
+    <h1 class="hero-split__title">{{ .Title }}</h1>
+    {{ with .Params.heroSubtitle }}
+      <p class="hero-split__subtitle">{{ . }}</p>
+    {{ end }}
+  </div>
+  <div class="hero-split__image" role="button" tabindex="0" aria-label="View full image">
+    <img src="{{ $heroImage | relURL }}" alt="{{ .Title }}" />
+  </div>
+</section>
+
+<div class="lightbox" id="lightbox" aria-hidden="true">
+  <div class="lightbox__backdrop"></div>
+  <div class="lightbox__content">
+    <img class="lightbox__img" src="{{ $heroImage | relURL }}" alt="{{ .Title }}" />
+    {{ with .Params.heroImageDesc }}<p class="lightbox__caption">{{ . }}</p>{{ end }}
+  </div>
+</div>
+
+{{ partial "blog-tabs.html" . }}
+
+<main id="page-content" class="site-content">
+  <div class="container">
+    <div class="taxonomy-list">
+      {{ range .Pages }}
+        <a href="{{ .Permalink }}" class="taxonomy-chip">
+          {{ .Title }}
+          <span class="taxonomy-chip__count">{{ len .Pages }}</span>
+        </a>
+      {{ else }}
+        <p class="blog-tabs__empty">No {{ lower .Title }} found.</p>
+      {{ end }}
+    </div>
+  </div>
+</main>
+
+<script>
+(function () {
+  var trigger = document.querySelector('.hero-split__image');
+  var lightbox = document.getElementById('lightbox');
+  if (!trigger || !lightbox) return;
+  function open() { lightbox.classList.add('is-active'); lightbox.setAttribute('aria-hidden', 'false'); }
+  function close() { lightbox.classList.remove('is-active'); lightbox.setAttribute('aria-hidden', 'true'); }
+  trigger.addEventListener('click', open);
+  trigger.addEventListener('keydown', function (e) { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); open(); } });
+  lightbox.querySelector('.lightbox__backdrop').addEventListener('click', close);
+  lightbox.addEventListener('keydown', function (e) { if (e.key === 'Escape') close(); });
+})();
+</script>
+{{ end }}

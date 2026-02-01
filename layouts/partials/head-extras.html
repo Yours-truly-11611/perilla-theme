@@ -1,0 +1,25 @@
+<!-- Google Analytics -->
+{{ with .Site.Params.googleAnalytics }}
+<script async src="https://www.googletagmanager.com/gtag/js?id={{ . }}"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+  gtag('config', '{{ . }}');
+</script>
+{{ end }}
+
+<!-- Open Graph / Social Meta -->
+<meta property="og:title"       content="{{ if .IsHome }}{{ .Site.Title }}{{ else }}{{ .Title }}{{ end }}" />
+<meta property="og:description" content="{{ with .Description }}{{ . }}{{ else }}{{ .Site.Params.description }}{{ end }}" />
+<meta property="og:type"        content="{{ if .IsPage }}article{{ else }}website{{ end }}" />
+<meta property="og:url"         content="{{ .Permalink }}" />
+{{ with .Site.Params.heroImage }}
+  <meta property="og:image" content="{{ . | relURL }}" />
+{{ end }}
+
+<!-- Canonical -->
+<link rel="canonical" href="{{ .Permalink }}" />
+
+<!-- Favicon (place your favicon.ico in static/) -->
+<link rel="icon" href="{{ "favicon.ico" | relURL }}" />

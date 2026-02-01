@@ -1,0 +1,63 @@
+{{/* Blog tab bar with categories dropdown.
+     Pass context with: {{ partial "blog-tabs.html" . }}
+     Expects: .currentPath  — set via the calling template
+              .Site          — for taxonomy access
+*/}}
+{{ $currentPath := .RelPermalink }}
+{{ $catActive := or (eq $currentPath "/categories/") (hasPrefix $currentPath "/categories/") }}
+{{ $tagActive := or (eq $currentPath "/tags/") (hasPrefix $currentPath "/tags/") }}
+<nav class="blog-tabs" aria-label="Blog navigation">
+  <a href="/blog/" class="blog-tabs__tab {{ if eq $currentPath "/blog/" }}is-active{{ end }}">All Posts</a>
+  <a href="/blog/popular/" class="blog-tabs__tab {{ if eq $currentPath "/blog/popular/" }}is-active{{ end }}">Popular</a>
+
+  <div class="blog-tabs__dropdown">
+    <button class="blog-tabs__tab blog-tabs__dropdown-trigger {{ if $catActive }}is-active{{ end }}" aria-expanded="false" aria-haspopup="true">
+      Categories
+      <svg class="blog-tabs__chevron" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"></polyline></svg>
+    </button>
+    <div class="blog-tabs__dropdown-menu" role="menu">
+      {{ $categories := .Site.Taxonomies.categories }}
+      {{ if $categories }}
+        {{ range $categories.Alphabetical }}
+          <a href="{{ .Page.Permalink }}" class="blog-tabs__dropdown-item" role="menuitem">
+            {{ .Page.Title }}
+            <span class="blog-tabs__dropdown-count">{{ .Count }}</span>
+          </a>
+        {{ end }}
+      {{ else }}
+        <span class="blog-tabs__dropdown-item blog-tabs__dropdown-item--empty">No categories yet</span>
+      {{ end }}
+      <a href="/categories/" class="blog-tabs__dropdown-item blog-tabs__dropdown-item--all" role="menuitem">View all categories</a>
+    </div>
+  </div>
+
+  <a href="/tags/" class="blog-tabs__tab {{ if $tagActive }}is-active{{ end }}">Tags</a>
+</nav>
+
+<script>
+(function () {
+  var dropdown = document.querySelector('.blog-tabs__dropdown');
+  if (!dropdown) return;
+  var trigger = dropdown.querySelector('.blog-tabs__dropdown-trigger');
+
+  trigger.addEventListener('click', function (e) {
+    e.preventDefault();
+    var open = dropdown.classList.toggle('is-open');
+    trigger.setAttribute('aria-expanded', open);
+  });
+
+  document.addEventListener('click', function (e) {
+    if (!dropdown.contains(e.target)) {
+      dropdown.classList.remove('is-open');
+      trigger.setAttribute('aria-expanded', 'false');
+    }
+  });
+
+  document.addEventListener('keydown', function (e) {
+    if (e.key === 'Escape') {
+      dropdown.classList.remove('is-open');
+      trigger.setAttribute('aria-expanded', 'false');
+    }
+  });
+})();
+</script>

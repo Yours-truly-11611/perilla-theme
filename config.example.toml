@@ -1,0 +1,49 @@
+# ============================================================
+# Example config.toml — copy into your Hugo site root
+# and set theme = "perilla" (or whatever you name the folder)
+# ============================================================
+
+baseURL      = "https://yoursite.com/"
+languageCode = "en-US"
+title        = "Your Site Title"
+theme        = "perilla"
+
+# ──────────────────────────────────────────
+# Theme Parameters
+# ──────────────────────────────────────────
+[params]
+  description     = "A short site description for SEO and Open Graph."
+
+  # Hero / Landing Page
+  heroTitle       = "Your Site Title"          # Large display title on homepage
+  heroSubtitle    = "Writing & Design"         # Small text below the title (optional — remove key to hide)
+  heroImage       = "images/hero.jpg"          # Path relative to your site's static/ folder
+  heroTintColor   = "rgba(30, 20, 40, 0.55)"  # CSS color overlay on the hero image. Adjust opacity (last value) to taste.
+  menuButtonLabel = "Explore"                  # Text on the menu button beneath the title
+
+  # Footer
+  footerNote      = "Built with Hugo &amp; the Perilla theme."
+
+# ──────────────────────────────────────────
+# Navigation Menu
+# ──────────────────────────────────────────
+# Add or remove [[menu.main]] entries to populate the overlay nav.
+[[menu.main]]
+  name   = "About"
+  url    = "/about/"
+  weight = 1
+
+[[menu.main]]
+  name   = "Blog"
+  url    = "/blog/"
+  weight = 2
+
+[[menu.main]]
+  name   = "Portfolio"
+  url    = "/portfolio/"
+  weight = 3
+
+[[menu.main]]
+  name   = "Contact"
+  url    = "/contact/"
+  weight = 4

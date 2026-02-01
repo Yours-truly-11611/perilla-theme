@@ -1,0 +1,24 @@
+<footer class="footer">
+  <div class="container">
+    <div class="footer__search">
+      <input type="text" class="footer__search-input" id="footerSearchInput" placeholder="Search the site..." autocomplete="off" />
+    </div>
+    <nav class="footer__breadcrumbs" aria-label="Breadcrumb">
+      <ol class="breadcrumbs">
+        <li class="breadcrumbs__item"><a href="{{ "/" | relURL }}">Home</a></li>
+        {{- if not .IsHome -}}
+          {{- range .Ancestors.Reverse -}}
+            {{- if not .IsHome -}}
+              <li class="breadcrumbs__item"><a href="{{ .RelPermalink }}">{{ .Title }}</a></li>
+            {{- end -}}
+          {{- end -}}
+          <li class="breadcrumbs__item breadcrumbs__item--active" aria-current="page">{{ .Title }}</li>
+        {{- end -}}
+      </ol>
+    </nav>
+    <p class="footer__copy">
+      &copy; {{ now.Year }} {{ .Site.Params.heroTitle | default .Site.Title }}.
+      {{ with .Site.Params.footerNote }}{{ . | safeHTML }}{{ else }}All rights reserved.{{ end }}
+    </p>
+  </div>
+</footer>

@@ -1,0 +1,33 @@
+{{ define "main" }}
+<section class="hero" aria-label="Site hero">
+
+  <!-- Background image + tint overlay via inline style so users can set their own image in config -->
+  <div class="hero__bg"
+       style="background-image: url('{{ .Site.Params.heroImage | relURL }}');
+              background-color: {{ .Site.Params.heroTintColor | default "rgba(30,20,40,0.55)" }};">
+  </div>
+
+  <!-- Centered content -->
+  <div class="hero__content">
+    <h1 class="hero__title">{{ .Site.Params.heroTitle | default .Site.Title }}</h1>
+
+    {{ with .Site.Params.heroSubtitle }}
+      <p class="hero__subtitle">{{ . }}</p>
+    {{ end }}
+
+    <!-- Menu toggle button -->
+    <button class="hero__menu-btn" aria-controls="nav-overlay" aria-expanded="false" aria-label="Open navigation menu">
+      {{ .Site.Params.menuButtonLabel | default "Explore" }}
+    </button>
+  </div>
+</section>
+
+<!-- If there is page content below the hero (e.g. pinned posts), render it -->
+{{ with .Content }}
+  <main class="site-content">
+    <div class="container">
+      {{ . }}
+    </div>
+  </main>
+{{ end }}
+{{ end }}
