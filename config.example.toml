@@ -22,7 +22,7 @@ theme        = "perilla"
   menuButtonLabel = "Explore"                  # Text on the menu button beneath the title
 
   # Footer
-  footerNote      = "Built with Hugo &amp; the Perilla theme."
+  footerNote      = "Built with Hugo & the Perilla theme."
 
 # ──────────────────────────────────────────
 # Navigation Menu
